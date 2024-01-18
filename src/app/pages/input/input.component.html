@@ -1,0 +1,54 @@
+
+<h1 class="m-4 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Creación de Inputs</h1>
+<form  [formGroup]="formGroup" class="max-w-sm mx-auto" (ngSubmit)="onSubmit()">
+    <div class="mb-5">
+      <input type="text" formControlName="name" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="nombre">
+    </div>
+    <div class="mb-5">
+      <textarea formControlName="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+    </div>
+    <div class="mb-5">
+      <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elija el tipo de campo</label>
+      <select formControlName="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        @for(option of inputType;track option.name; let i=$index){
+          <option [selected]="i==0"  value="{{option.value}}">{{option.name}}</option>
+        }
+      </select>
+    </div> 
+  @if(formGroup.value.type==1){
+  <div class="flex items-center mb-4">
+    <input formControlName="decimal" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+    <label for="decimal" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Decimal</label>
+   </div> 
+   @if(formGroup.value.decimal){
+      <div class="relative mb-6">
+        <label for="decimals" class="sr-only">Número de decimales</label>
+        <input formControlName="decimals" type="range" step="1" value="1" min="1" max="4" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+        <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">Min (1)</span>
+        <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">2</span>
+        <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-2/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">3</span>
+        <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">Max (4)</span>
+    </div>
+    }
+
+
+  }
+  <div class="mb-5 mt-4">
+    <input type="text" formControlName="unit" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="Unidad de medida, por ejemplo cms">
+  </div>
+    <button type="submit"  [disabled]="!formGroup.valid" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Crea Input</button>
+  </form>
+
+  <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+
+  <h2 class="m-10 mb-2 text-lg font-semibold text-gray-900 dark:text-white">Inputs:</h2>
+<ul class="m-10 max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">
+  @for(i of inputService.mockData;track i.name){
+    <li>{{i | json}}</li>
+  }
+  @empty {
+    <li>No hay Inputs aún</li>
+  } 
+ 
+
+</ul>

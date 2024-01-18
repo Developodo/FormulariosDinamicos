@@ -1,0 +1,59 @@
+<div class="w-full bg-blue-300 h-5"> {{inputBuffer}}</div>
+<div class="row">
+    <div class="col">
+        <div class="grid grid-cols-3 gap-1">
+            <button class="bg-gray-300 p-4" (click)="handleKey('Math.sqrt(',')')">√</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('Math.pow(',',',')')">^</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('Math.sin(',')')">Sin</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('Math.cos(',')')">Cos</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('Math.tan(',')')">Tan</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('Math.log(',')')">Log</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('Math.exp(',')')">Exp</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('average(',')')">Avg</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('(')">(</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey(')')">)</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('#')">Inputs</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('Math.round(',')')">Round</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('Math.floor(',')')">Floor</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('Math.ceil(',')')">Ceil</button>
+            <button class="bg-gray-300 p-4" (click)="removeItem()">X</button>
+          </div>
+    </div>
+    <div class="col-30">
+        <div [style.background-color]="status().error?'rgb(220, 197, 197)':'rgb(197, 197, 197)'"
+        class="flex flex-row flex-wrap canvas example-list" 
+        
+        cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">
+            <div *ngFor="let item of items" 
+                 cdkDragBoundary=".canvas"
+                 cdkDrag 
+                 [attr.data-id]="item.id" 
+                 class="items example-box"
+                 (click)="selectItem(item)"
+                 [style.background-color]="item.selected ? 'red' : 'white'">
+              {{ item.text }}
+             <!--<button class="ml-2 text-red-500" (click)="deleteItem(item.id)">Eliminar</button>--> 
+            </div>
+          </div>
+    </div>
+    <div class="col">
+        <div class="grid grid-cols-3 gap-1">
+            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('1')">1</button>
+            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('2')">2</button>
+            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('3')">3</button>
+            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('4')">4</button>
+            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('5')">5</button>
+            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('6')">6</button>
+            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('7')">7</button>
+            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('8')">8</button>
+            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('9')">9</button>
+            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('0')">0</button>
+            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('.')">.</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('+')">+</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('-')">-</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('*')">*</button>
+            <button class="bg-gray-300 p-4" (click)="handleKey('/')">/</button>
+        </div>
+    </div>
+  </div>
+<div><button class="bg-blue-300 p-4 w-full" (click)="try()">Prueba la fórmula</button></div>
