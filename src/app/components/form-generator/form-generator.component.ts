@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, WritableSignal, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild, WritableSignal, inject, signal } from '@angular/core';
 import { Subject, debounceTime } from 'rxjs';
 import { CdkDrag, CdkDropList, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { InputService } from '../../services/input.service';
+import {OverlayModule} from '@angular/cdk/overlay';
+import { InputData } from '../../model/InputData';
 
 interface Item {
   id: number;
@@ -12,14 +15,18 @@ interface Item {
 @Component({
   selector: 'app-form-generator',
   standalone: true,
-  imports: [CommonModule, DragDropModule,CdkDropList, CdkDrag],
+  imports: [CommonModule, DragDropModule,CdkDropList, CdkDrag,OverlayModule],
   templateUrl: './form-generator.component.html',
   styleUrl: './form-generator.component.scss'
 })
 export class FormGeneratorComponent {
   public inputBuffer: string = '';
   private inputBufferSubject = new Subject<string>();
+  inputS = inject(InputService);
+  isOpen=false;
+  @Output() changed = new EventEmitter();
 
+  
   items: Item[] = [];
   selectedItemId: number | null = null;
   itemsid:number = 0;
@@ -30,7 +37,7 @@ export class FormGeneratorComponent {
 
   ngOnInit() {
     this.inputBufferSubject
-      .pipe(debounceTime(750))
+      .pipe(debounceTime(500))
       .subscribe(() => {
         this.handleInputBuffer();
       });
@@ -50,10 +57,18 @@ export class FormGeneratorComponent {
     this.evaluateFormulas();
   }
 
+  insertInput(input: InputData) {
+    if(input && input.name)
+      this.insertElement('#'+input?.id+'{'+input?.name+'}');
+
+      this.isOpen=false;
+  }
+
   insertElement(newText: string) {
     const newItem: Item = { id: this.itemsid++, text: newText , selected:false};
     this.items.push(newItem);
     this.evaluateFormulas();
+    
     //this.evaluateFormulas();
   }
 
@@ -80,7 +95,8 @@ export class FormGeneratorComponent {
   }
 
   evaluateFormulas() {
-    const concatenatedFormula = this.items.map(item => item.text).join('');
+    const concatenatedFormula = this.emulateInputsToValidate();
+    this.changed.emit(concatenatedFormula);
     try {
       // Intenta evaluar la fórmula completa
       const result = eval(concatenatedFormula);
@@ -123,6 +139,41 @@ export class FormGeneratorComponent {
   }
 
   try(){
-    this.evaluateFormulas();
+    this.checkSintaxis();
+  }
+
+  emulateInputsToValidate(){
+    const concatenatedFormula = this.items.map(item => item.text).join('');
+    const patronRegex = /#(\d+){([^}]+)}/g;
+    return concatenatedFormula.replaceAll(patronRegex, '1');
+  }
+
+  checkSintaxis(){
+    const concatenatedFormula = this.items.map(item => item.text).join('');
+    let newconcatenatedFormula =concatenatedFormula;
+    const patronRegex = /#(\d+){([^}]+)}/gi;
+    const inputs = [...concatenatedFormula.matchAll(patronRegex)];
+    const inputsValues = [];
+    for (const input of inputs) {
+      const id = input[1];
+      const name = input[2];
+      let inputData = this.inputS.searchInput(+id);
+      const v = prompt(`Inserte valor para la variable ${name} en ${inputData?.unit}`);
+      const regex = RegExp(`#${id}{${name}}`, 'gi')
+      console.log(newconcatenatedFormula)
+      newconcatenatedFormula = newconcatenatedFormula.replace(regex,v+"");
+    }
+    let output=undefined;
+    try{
+      output=eval(newconcatenatedFormula)
+    }catch(err){
+      console.error(err);
+    }
+    if(output){
+      alert("La salida es :" + output);
+    }else{
+      alert("Existe un error en la fórmula");
+    }
+    
   }
 }

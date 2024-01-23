@@ -1,10 +1,10 @@
 import { InputData } from "./InputData";
 
 export interface OutputData{
-    id?:string,
+    id?:number,
     name?:string,
     description?:string,
-    inputs?:InputData[],
+    inputsIds?:number[],
     calculations?:string
     lowerValue:{
         value:number,

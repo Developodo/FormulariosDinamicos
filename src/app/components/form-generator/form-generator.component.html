@@ -1,22 +1,49 @@
 <div class="w-full bg-blue-300 h-5"> {{inputBuffer}}</div>
 <div class="row">
     <div class="col">
-        <div class="grid grid-cols-3 gap-1">
-            <button class="bg-gray-300 p-4" (click)="handleKey('Math.sqrt(',')')">√</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('Math.pow(',',',')')">^</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('Math.sin(',')')">Sin</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('Math.cos(',')')">Cos</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('Math.tan(',')')">Tan</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('Math.log(',')')">Log</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('Math.exp(',')')">Exp</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('average(',')')">Avg</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('(')">(</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey(')')">)</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('#')">Inputs</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('Math.round(',')')">Round</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('Math.floor(',')')">Floor</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('Math.ceil(',')')">Ceil</button>
-            <button class="bg-gray-300 p-4" (click)="removeItem()">X</button>
+        <div class="grid grid-cols-3 gap-1 botonera">
+
+            <button type="button" class=" col-span-2 bg-gray-300 p-1" (click)="isOpen = !isOpen" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Inputs</button>
+            <ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen">
+
+    <ul class=" mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
+      <!--
+        Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation.
+
+        Highlighted: "bg-indigo-600 text-white", Not Highlighted: "text-gray-900"
+      -->
+      @for(input of inputS.mockData;track input.id){
+        @if(input.type==1 || input.type==2){
+          <li (click)="insertInput(input)" class="text-gray-900 relative cursor-default select-none py-2 pl-3 pr-9" id="listbox-option-0" role="option">
+            <div class="flex items-center">
+              <span class="font-normal ml-3 block truncate">{{input.name}}</span>
+            </div>
+    
+          </li>
+        }
+     
+    }
+      <!-- More items... -->
+    </ul>
+
+
+</ng-template>
+<button type="button" class="bg-gray-300 p-1" (click)="removeItem()">X</button>
+<button type="button" class="bg-gray-300 p-1" (click)="handleKey('Math.sqrt(',')')">√</button>
+<button type="button" class="bg-gray-300 p-1" (click)="handleKey('Math.pow(',',',')')">^</button>
+<button type="button" class="bg-gray-300 p-1" (click)="handleKey('average(',')')">Avg</button>
+<button type="button" class="bg-gray-300 p-1" (click)="handleKey('(')">(</button>
+<button type="button" class="bg-gray-300 p-1" (click)="handleKey(')')">)</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKey('Math.round(',')')">Round</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKey('Math.floor(',')')">Floor</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKey('Math.ceil(',')')">Ceil</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKey('Math.sin(',')')">Sin</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKey('Math.cos(',')')">Cos</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKey('Math.tan(',')')">Tan</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKey('Math.log(',')')">Log</button>  
           </div>
     </div>
     <div class="col-30">
@@ -37,22 +64,22 @@
           </div>
     </div>
     <div class="col">
-        <div class="grid grid-cols-3 gap-1">
-            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('1')">1</button>
-            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('2')">2</button>
-            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('3')">3</button>
-            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('4')">4</button>
-            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('5')">5</button>
-            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('6')">6</button>
-            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('7')">7</button>
-            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('8')">8</button>
-            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('9')">9</button>
-            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('0')">0</button>
-            <button class="bg-gray-300 p-4" (click)="handleKeyNumber('.')">.</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('+')">+</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('-')">-</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('*')">*</button>
-            <button class="bg-gray-300 p-4" (click)="handleKey('/')">/</button>
+        <div class="grid grid-cols-3 gap-1 botonera">
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKeyNumber('1')">1</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKeyNumber('2')">2</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKeyNumber('3')">3</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKeyNumber('4')">4</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKeyNumber('5')">5</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKeyNumber('6')">6</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKeyNumber('7')">7</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKeyNumber('8')">8</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKeyNumber('9')">9</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKeyNumber('0')">0</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKeyNumber('.')">.</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKey('+')">+</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKey('-')">-</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKey('*')">*</button>
+            <button type="button" class="bg-gray-300 p-1" (click)="handleKey('/')">/</button>
         </div>
     </div>
   </div>

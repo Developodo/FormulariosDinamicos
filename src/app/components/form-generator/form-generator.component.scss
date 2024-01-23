@@ -52,3 +52,28 @@
   .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
+
+  .imput-list {
+    width: 100px;
+    border: solid 1px #ccc;
+    border-radius: 5px;
+    background: #fff;
+    text-align: center;
+    padding: 10px;
+    margin: 0;
+  }
+  .botonera{
+    button{
+      font-size: 1rem;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .botonera{
+      button{
+        font-size: 0.5rem;
+      }
+    }
+}
+
+  
