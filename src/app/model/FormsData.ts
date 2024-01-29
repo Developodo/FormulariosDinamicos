@@ -1,10 +1,10 @@
 import { InputData } from "./InputData"
 import { OutputData } from "./OutputData"
 
-export interface FormData{
+export interface FormsData{
     id?:string
     name?:string
     description?:string
-    inputs?:InputData[],
-    outputs?:OutputData[] 
+    inputs?:number[],
+    outputs?:number[] 
 }

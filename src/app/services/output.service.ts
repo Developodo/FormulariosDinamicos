@@ -11,7 +11,7 @@ export class OutputService {
       name:'IMC',
       description:'Índice de masa muscular',
       inputsIds:[1,2],
-      calculations:"#1{Peso}/Math.pow(#2{Altura},2)",
+      calculations:"#1{Peso}/Math.pow(#2{Altura}/100,2)",
       lowerValue:{
           value:35,
           text:"Obesidad"
@@ -41,5 +41,19 @@ export class OutputService {
   }
   searchOutput(id:number|undefined):OutputData|undefined{
     return this._mockData.find(input=>input.id===id)
+  }
+
+  getOutputsWithInputsId(ids:number[]){
+    let result:OutputData[]=[];
+    this._mockData.forEach(output=>{
+      if(output.inputsIds && output.inputsIds.length>0){
+        const filteredArray = ids.filter(value => output.inputsIds?.includes(value));
+        if(filteredArray && filteredArray.length==output.inputsIds.length){
+          result.push(output)
+        }
+      }
+    })
+    return result;
+    
   }
 }
